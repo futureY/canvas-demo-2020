@@ -5,37 +5,96 @@
 		<meta name="robots" content="noindex">
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<title></title>
+		<script src="//at.alicdn.com/t/font_1984582_fbf5i0ljei8.js" ></script>
 		<style id="jsbin-css">
+			 .icon {
+			 width: 1em; height: 1em;
+			 vertical-align: -0.15em;
+			 fill: currentColor;
+			 overflow: hidden;
+			 }
+			 ul,li{
+				 list-style: none;
+			 }
+			 *{
+				margin:0 ;
+				  padding: 0;
+			 }
+		
 			#xx{
-		  background:green;
+		  background:white;
 		  display:block;
 		} 
 		
 		body{
 		  margin:0px;
+		   overflow: hidden;
 		}
 		.actions{
 			position: fixed;
 			left: 0;
-			bottom: 0;
+			top: 0;
+			padding: 20px;
 		}
-		.actions>#brush{
-			display: none;
+		.actions svg{
+			width: 1.5em;
+			height: 1.5em;
+		transition: all 1.3s;
+		margin: 0 10px;
 		}
-		.actions.x>#brush{
-			display: inline-block;
+		.actions svg.active{
+			fill: blue;
+			transform: scale(1.2);
+		
 		}
-		.actions.x>#eraser{
-		display: none;
+		.colors{
+			position: fixed;
+			top: 60px;
+			left: 28px;
+		
 		}
+		.colors> li{
+			width: 20px;
+			height: 20px;
+			border-radius: 50%;
+			box-shadow:0 0 3px rgba(0,0,0,0.25) ;
+			margin: 10px 0;
+				transition: all 0.3; 
+		}
+	.colors>li.red{
+		background: red;
+	}
+	.colors>li.green{
+		background: green;
+	}
+	.colors>li.blue{
+		background: blue;
+	}
+	.colors> li.active{
+		transform: scale(1.2);
+	
+		box-shadow:0 0 3px rgba(0,0,0,0.95) ;
+	
+	}
+		
 		</style>
 	</head>
 	<body>
 
 		<canvas id="xx" width="300" height="300"></canvas>
 		<div id="actions" class="actions">
-		<button id="eraser" >橡皮擦</button>
-		<button id="brush" >画笔</button>
+			 <svg id="pen" class="active icon">
+			 <use xlink:href="#icon-brush"></use>
+			 </svg>
+			 <svg id="eraser" class="icon" >
+			 <use xlink:href="#icon-xiangpi"></use>
+			 </svg>
+			 <div class="colors">
+				 <li id="red" class="red active"></li>
+				 <li id="green" class="green"></li>
+				 <li id="blue" class="blue"> </li>
+			 </div>
+		
 		</div>
 		
 	</body>
@@ -47,7 +106,7 @@
 		
 		function drawLine(x1, y1, x2, y2) {
 			context.beginPath();
-			context.strokeStyle = 'black';
+			// context.strokeStyle = 'black';
 			context.moveTo(x1, y1);
 			context.lineTo(x2, y2);
 			context.lineWidth = 5
@@ -58,12 +117,37 @@
 		var eraserEnabled = false
 		eraser.onclick = function() {
 			eraserEnabled = true
-			actions.className = 'actions x'
+			eraser.classList.add('active')
+			pen.classList.remove('active')
 		}
-		brush.onclick =function(){
+		pen.onclick =function(){
 			eraserEnabled =false
-			actions.className ='actions'
+			pen.classList.add('active')
+			eraser.classList.remove('active')
+			
+			}
+		red.onclick=function(){
+			context.fillStyle="red"
+			context.strokeStyle="red"
+			red.classList.add('active')
+			blue.classList.remove('active')
+			green.classList.remove('active')
 		}
+		blue.onclick=function(){
+		context.fillStyle="blue"
+		context.strokeStyle="blue"	
+		blue.classList.add('active')
+		red.classList.remove('active')
+		green.classList.remove('active')
+		}
+		green.onclick=function(){
+			context.fillStyle="green"
+			context.strokeStyle="green"
+			green.classList.add('active')
+			blue.classList.remove('active')
+			red.classList.remove('active')
+		}
+		
 		
 		function atuosetCanvasSize(canvas){
 			setCanvasSize();
@@ -98,7 +182,7 @@
 				
 				var x = a.touches[0].clientX
 				var y = a.touches[0].clientY
-				console.log(x,y)
+				// console.log(x,y)
 				using =true
 				if (eraserEnabled) {
 					
@@ -127,7 +211,7 @@
 			}
 				}
 				canvas.ontouchend = function(){
-				console.log('3')
+				// console.log('3')
 				}
 				canvas.onmouseup = function(a) {
 					using = false
