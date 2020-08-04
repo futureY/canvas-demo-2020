@@ -5,7 +5,7 @@
 		<meta name="robots" content="noindex">
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<title></title>
-		<script src="//at.alicdn.com/t/font_1984582_fbf5i0ljei8.js" ></script>
+		<script src="//at.alicdn.com/t/font_1984582_p2ekk4daji9.js" ></script>
 		<style id="jsbin-css">
 			 .icon {
 			 width: 1em; height: 1em;
@@ -76,6 +76,25 @@
 		box-shadow:0 0 3px rgba(0,0,0,0.95) ;
 	
 	}
+	.size{
+		position: fixed;
+		right: 20px;
+		top: 10px;
+	}
+	.size >li{
+		margin: 20px 0;
+		
+	}
+	.size >.thin{
+		height: 0;
+		width: 20px;
+		border-top:3px solid black  ;
+	}
+	.size>.thick{
+		height: 0;
+		width: 20px;
+		border-top:6px solid black  ;
+	}
 		
 		</style>
 	</head>
@@ -89,6 +108,12 @@
 			 <svg id="eraser" class="icon" >
 			 <use xlink:href="#icon-xiangpi"></use>
 			 </svg>
+			 <svg id="clear" class="icon" >
+			 <use xlink:href="#icon-lajitong"></use>
+			 </svg>
+			 <svg id="download" class="icon" >
+			 <use xlink:href="#icon-xiazai"></use>
+			 </svg>
 			 <div class="colors">
 				 <li id="red" class="red active"></li>
 				 <li id="green" class="green"></li>
@@ -96,23 +121,49 @@
 			 </div>
 		
 		</div>
+		<ol class="size">
+			<li class="thin" id="thin"></li>
+			<li class="thick" id="thick"></li>
+		</ol>
 		
 	</body>
 	<script type="text/javascript">
 		var yyy = document.getElementById('xx');
 		var context = yyy.getContext('2d');
+		var linewidth =  5;
 		atuosetCanvasSize(yyy);
 		listenToUser(yyy);
 		
+		thin.onclick = function(){
+			linewidth =  5;
+			}
+		thick.onclick= function(){
+		linewidth =  10;
+			}
+		clear.onclick = function(){
+				context.clearRect(0,0,yyy.width,yyy.height);
+			}
+			download.onclick = function(){
+				var url = yyy.toDataURL("image/png")
+				console.log(url) 
+				var a = document.createElement('a')
+				document.body.appendChild(a)
+			a.href = url
+			a.download = 'pic'
+			a.target= '_blank'
+			a.click()
+			}
 		function drawLine(x1, y1, x2, y2) {
 			context.beginPath();
 			// context.strokeStyle = 'black';
 			context.moveTo(x1, y1);
 			context.lineTo(x2, y2);
-			context.lineWidth = 5
+		context.lineWidth = linewidth
 			context.stroke();
 			context.closePath();
 		}
+		
+		
 		/*******/
 		var eraserEnabled = false
 		eraser.onclick = function() {
